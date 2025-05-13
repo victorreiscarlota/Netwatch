@@ -5,7 +5,7 @@
 NetWatch is a high-performance network traffic monitoring application developed in C++ using Boost.Asio. It captures and analyzes TCP and UDP packets, displaying metadata such as source/destination IPs, ports, protocols, and packet sizes. Designed with scalability and modularity in mind, it simulates enterprise-grade network visibility tools.
 
 
-NetWatch was developed as a proof-of-concept for SecureNet Intelligence. The firm needed a lightweight, portable tool to monitor internal network activity for performance analytics and early threat detection in small to medium-sized corporate networks.
+NetWatch was developed as a proof-of-concept. The firm needed a lightweight, portable tool to monitor internal network activity for performance analytics and early threat detection in small to medium-sized corporate networks.
 
 ---
 
