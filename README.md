@@ -1,12 +1,11 @@
 # NetWatch - Professional Network Traffic Monitor
-
+![NetWatch project](./assets/netwatch.png "netwatch")
 ## Overview
 
-NetWatch is a high-performance network traffic monitoring application developed in C++ using Boost.Asio. It captures and analyzes TCP and UDP packets, displaying metadata such as source/destination IPs, ports, protocols, and packet sizes. Designed with scalability and modularity in mind, it serves as a real-world project simulating enterprise-grade network visibility tools.
+NetWatch is a high-performance network traffic monitoring application developed in C++ using Boost.Asio. It captures and analyzes TCP and UDP packets, displaying metadata such as source/destination IPs, ports, protocols, and packet sizes. Designed with scalability and modularity in mind, it simulates enterprise-grade network visibility tools.
 
-## Real-world Use Case
 
-NetWatch was developed as a proof-of-concept for firm. The firm needed a lightweight, portable tool to monitor internal network activity for performance analytics and early threat detection in small to medium-sized corporate networks.
+NetWatch was developed as a proof-of-concept for SecureNet Intelligence. The firm needed a lightweight, portable tool to monitor internal network activity for performance analytics and early threat detection in small to medium-sized corporate networks.
 
 ---
 
@@ -14,144 +13,138 @@ NetWatch was developed as a proof-of-concept for firm. The firm needed a lightwe
 
 ### Programming Language
 
-* **C++**: Chosen for performance and low-level network access capabilities. Suitable for real-time packet processing.
+* **C++17**: Performance, memory control (RAII, move semantics).
 
-### Networking
+### Asynchronous Networking
 
-* **Boost.Asio**: Provides asynchronous TCP and UDP socket handling, highly performant and scalable.
+* **Boost.Asio**: Cross-platform, asynchronous TCP/UDP socket handling.
 
-### Multithreading
+### Concurrency
 
-* **std::thread / Boost.Thread**: Handles concurrent packet capturing and parsing efficiently.
+* **std::thread / Boost.Thread**: Parallel packet capture and processing.
 
 ### Parsing
 
-* **Custom packet header parsers**: Designed for extensibility and accurate dissection of IPv4 headers, TCP, and UDP segments.
+* **Custom parsers**: Dissect IPv4, TCP, and UDP headers for metadata extraction.
 
-### Persistence Layer
+### Persistence
 
-* **SQLite (default)**: Embedded and lightweight database for local storage of packet metadata.
-* **PostgreSQL (optional)**: For enterprise deployment scenarios requiring remote querying and better scalability.
-* **TimescaleDB (optional)**: Extension of PostgreSQL used if time-series analysis of packets over time is needed.
-
-#### Why SQLite?
-
-* Easy integration, zero setup, perfect for portable deployments.
-
-#### Why PostgreSQL?
-
-* Supports complex querying, user access management, and scalability.
-
-#### Why TimescaleDB?
-
-* Excellent fit for time-series data like packet traffic monitoring with built-in compression and retention policies.
+* **SQLite (default)**: Embedded DB for local packet metadata storage.
+* **PostgreSQL (optional)**: For centralized, scalable deployments.
+* **TimescaleDB (optional)**: Time-series analytics on packet streams.
 
 ---
 
 ## Project Structure
 
-```
+```text
 NetWatch/
-│
-├── src/                       # Core application logic
-│   ├── main.cpp               # Entry point
-│   ├── network/               # TCP/UDP handling
-│   ├── parser/                # Packet header parsers
-│   ├── storage/               # Database interaction layer
-│   ├── config/                # Config loader
-│   └── utils/                 # Logging, helpers
-│
-├── diagrams/                 # Architecture and usage diagrams
-├── tests/                    # Unit and integration tests
-├── docs/                     # Documentation and API references
-├── CMakeLists.txt            # Build system
-└── README.md                 # Project documentation
+├── CMakeLists.txt          # Build configuration
+├── src/                    # Source code
+│   ├── main.cpp            # Application entry point (CLI)
+│   ├── network/            # Boost.Asio sniffer implementation
+│   ├── parser/             # PacketParser for IPv4/TCP/UDP
+│   ├── storage/            # SQLiteStorage implementation
+│   └── utils/              # Logging, helpers
+├── include/                # Public headers
+│   └── netwatch/
+│       ├── network/
+│       ├── parser/
+│       └── storage/
+├── imgui/                  # Dear ImGui submodule
+├── NetWatchGUI.cpp         # ImGui-based GUI
+├── build/                  # Out-of-source build directory
+├── scripts/                # SQL init & insert scripts
+├── packets.db              # Sample database (after init)
+└── README.md               # Project documentation
 ```
 
 ---
 
-## Diagrams (to be included in `/diagrams`)
+## Diagrams (in `/diagrams`)
 
 ### 1. Use Case Diagram
+![UseCase](./diagrams/use_case_netwatch.png "netwatch_use_Case")
 
-* Illustrates user interactions (Network Admins, Security Auditors).
+*Legend:* This diagram illustrates the primary actors and their interactions with NetWatch. The **Network Admin** starts and stops captures and views live statistics, while the **Security Auditor** focuses on historical data and report generation.
 
-### 2. Sequence Diagram
+### 2. Sequence Diagram Sequence Diagram
+![Sequence](./diagrams/sequencing_netwatch.png "netwatch_sequencing")
 
-* Packet capture -> Parse -> Persist -> Display
+*Legend:* This sequence shows the flow of a raw packet from capture to storage: the CLI triggers the sniffer, which loops to capture packets, sends raw data to the parser, and then persists the parsed result before notifying the CLI.
 
 ### 3. Class Diagram
 
-* Modules like PacketSniffer, TCPHandler, UDPHandler, DatabaseAdapter.
+![Class](./diagrams/classes_netwatch.png "netwatch_classes")
+
+*Legend:* This expanded class diagram details each class's attributes and methods, showing how `BoostSniffer` implements `IPacketSniffer`, interacts with `PacketParser`, and delegates persistence to `SQLiteStorage` via the `IDataStorage` interface.\* Highlights the core classes and their relationships: `BoostSniffer` implements `IPacketSniffer`, `PacketParser` parses raw data into `Packet`, and `SQLiteStorage` implements the `IDataStorage` interface for persistence.
 
 ### 4. Deployment Diagram
+![Deploy](./diagrams/deployment_netwatch.png "netwatch_deploy")
 
-* Client machine with NetWatch agent, PostgreSQL server, and remote dashboard.
+*Legend:* Depicts the runtime environment: the NetWatch agent runs on client machines writing to a central database server, while the GUI dashboard reads from that database for visualization.
 
 ### 5. ER Diagram (Database)
+![ER](./diagrams/er_netwatch.png "netwatch_er")
 
-* Tables: `packets`, `ip_addresses`, `logs`, `alerts`
-
----
-
-## Architectural Pattern
-
-### Hexagonal Architecture (Ports and Adapters)
-
-* **Core**: Packet processing, protocol parsing, and rule engines
-* **Ports**: Abstract interfaces (e.g., IDataStorage)
-* **Adapters**: SQLite/PostgreSQL adapters, CLI UI adapter
-
-**Benefits**:
-
-* Clear separation of concerns
-* Improved testability and modularity
-* Easier to replace infrastructure components
+*Legend:* This ER model expands data normalization: `ip_addresses` stores unique IPs, `packets` reference them via foreign keys, `connections` track session metadata across packets, and `alerts` record security events triggered by connection patterns. Shows the schema for the `packets` table: each row records a unique packet with its timestamp, protocol, endpoints, and payload size.
 
 ---
 
-## API Design (Optional)
+## Building & Running
 
-If a REST interface is required:
+### 1. Clone & Setup Submodule
 
-* **C++ REST SDK (Casablanca)**
-* Endpoint examples:
+```bash
+git clone --recurse-submodules https://github.com/your-user/NetWatch.git
+cd NetWatch
+```
 
-  * `GET /api/packets`
-  * `GET /api/stats`
-  * `POST /api/config`
+### 2. Build CLI Application
 
----
-
-## Testing
-
-* **Unit tests**: Catch2 framework
-* **Integration tests**: Simulated network traffic scenarios
-
----
-
-## Build & Run
-
-```sh
+```bash
 mkdir build && cd build
 cmake ..
-make
-./NetWatch
+make -j$(nproc)
+```
+
+#### Run CLI
+
+```bash
+sudo ./NetWatch eth0 packets.db
+```
+
+### 3. Initialize Database (Hardcoded Example)
+
+```bash
+mkdir -p scripts
+# Create and populate table
+sqlite3 packets.db < scripts/init_packets.sql
+sqlite3 packets.db < scripts/insert_packets.sql
+```
+
+### 4. Build & Run GUI
+
+```bash
+# In project root
+g++ NetWatchGUI.cpp \
+    imgui/*.cpp \
+    imgui/backends/imgui_impl_glfw.cpp \
+    imgui/backends/imgui_impl_opengl3.cpp \
+    -Iimgui -Iimgui/backends \
+    -lglfw -lGL -ldl -lpthread -lsqlite3 \
+    -o NetWatchGUI
+./NetWatchGUI
 ```
 
 ---
 
 ## Future Enhancements
 
-* Web UI using React + REST API
-* TLS decryption (for lawful inspection)
-* AI-based anomaly detection
-
----
-
-## License
-
-MIT License
+* Real-time charts with ImPlot
+* Filters by IP, port, protocol
+* Integration with PostgreSQL/TimescaleDB
+* REST API + React dashboard
 
 ---
 
@@ -163,4 +156,4 @@ MIT License
 
 ## Contributions
 
-Feel free to fork and submit PRs for improvements and new features!
+Feel free to fork and submit pull requests. Happy monitoring!
