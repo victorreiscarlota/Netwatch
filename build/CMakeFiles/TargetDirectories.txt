@@ -1,0 +1,5 @@
+/home/vitutivu/projects/Netwatch/build/CMakeFiles/network.dir
+/home/vitutivu/projects/Netwatch/build/CMakeFiles/storage.dir
+/home/vitutivu/projects/Netwatch/build/CMakeFiles/NetWatch.dir
+/home/vitutivu/projects/Netwatch/build/CMakeFiles/edit_cache.dir
+/home/vitutivu/projects/Netwatch/build/CMakeFiles/rebuild_cache.dir

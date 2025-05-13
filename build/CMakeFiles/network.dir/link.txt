@@ -1,0 +1,2 @@
+/usr/bin/ar qc libnetwork.a CMakeFiles/network.dir/src/network/BoostSniffer.cpp.o CMakeFiles/network.dir/src/parser/PacketParser.cpp.o
+/usr/bin/ranlib libnetwork.a

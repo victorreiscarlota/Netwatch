@@ -1,0 +1,26 @@
+[
+{
+  "directory": "/home/vitutivu/projects/Netwatch/build",
+  "command": "/usr/bin/c++ -DBOOST_ATOMIC_DYN_LINK -DBOOST_ATOMIC_NO_LIB -DBOOST_SYSTEM_DYN_LINK -DBOOST_SYSTEM_NO_LIB -DBOOST_THREAD_DYN_LINK -DBOOST_THREAD_NO_LIB -I/home/vitutivu/projects/Netwatch/include -std=gnu++17 -o CMakeFiles/network.dir/src/network/BoostSniffer.cpp.o -c /home/vitutivu/projects/Netwatch/src/network/BoostSniffer.cpp",
+  "file": "/home/vitutivu/projects/Netwatch/src/network/BoostSniffer.cpp",
+  "output": "CMakeFiles/network.dir/src/network/BoostSniffer.cpp.o"
+},
+{
+  "directory": "/home/vitutivu/projects/Netwatch/build",
+  "command": "/usr/bin/c++ -DBOOST_ATOMIC_DYN_LINK -DBOOST_ATOMIC_NO_LIB -DBOOST_SYSTEM_DYN_LINK -DBOOST_SYSTEM_NO_LIB -DBOOST_THREAD_DYN_LINK -DBOOST_THREAD_NO_LIB -I/home/vitutivu/projects/Netwatch/include -std=gnu++17 -o CMakeFiles/network.dir/src/parser/PacketParser.cpp.o -c /home/vitutivu/projects/Netwatch/src/parser/PacketParser.cpp",
+  "file": "/home/vitutivu/projects/Netwatch/src/parser/PacketParser.cpp",
+  "output": "CMakeFiles/network.dir/src/parser/PacketParser.cpp.o"
+},
+{
+  "directory": "/home/vitutivu/projects/Netwatch/build",
+  "command": "/usr/bin/c++  -I/home/vitutivu/projects/Netwatch/include -std=gnu++17 -o CMakeFiles/storage.dir/src/storage/SQLiteStorage.cpp.o -c /home/vitutivu/projects/Netwatch/src/storage/SQLiteStorage.cpp",
+  "file": "/home/vitutivu/projects/Netwatch/src/storage/SQLiteStorage.cpp",
+  "output": "CMakeFiles/storage.dir/src/storage/SQLiteStorage.cpp.o"
+},
+{
+  "directory": "/home/vitutivu/projects/Netwatch/build",
+  "command": "/usr/bin/c++ -DBOOST_ATOMIC_DYN_LINK -DBOOST_ATOMIC_NO_LIB -DBOOST_SYSTEM_DYN_LINK -DBOOST_SYSTEM_NO_LIB -DBOOST_THREAD_DYN_LINK -DBOOST_THREAD_NO_LIB -I/home/vitutivu/projects/Netwatch/include -std=gnu++17 -o CMakeFiles/NetWatch.dir/src/main.cpp.o -c /home/vitutivu/projects/Netwatch/src/main.cpp",
+  "file": "/home/vitutivu/projects/Netwatch/src/main.cpp",
+  "output": "CMakeFiles/NetWatch.dir/src/main.cpp.o"
+}
+]
